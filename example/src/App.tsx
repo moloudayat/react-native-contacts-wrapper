@@ -1,18 +1,31 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-contacts-wrapper';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Button,
+  PermissionsAndroid,
+} from 'react-native';
+import ContactsWrapper from 'react-native-contacts-wrapper';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
+  const [contact, setContact] = React.useState<string | undefined>();
 
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
+  const onSelect = async () => {
+    const granted = await PermissionsAndroid.request(
+      'android.permission.READ_CONTACTS'
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      const _contact = await ContactsWrapper.getContact();
+      setContact(_contact);
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <Text>Result: {contact}</Text>
+      <Button title="select contact" onPress={onSelect} />
     </View>
   );
 }
