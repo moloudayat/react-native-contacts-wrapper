@@ -17,6 +17,4 @@ const ContactsWrapper = NativeModules.ContactsWrapper
       }
     );
 
-export function multiply(a: number, b: number): Promise<number> {
-  return ContactsWrapper.multiply(a, b);
-}
+export default ContactsWrapper;
